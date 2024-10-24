@@ -74,12 +74,12 @@ int main()
         //main_raii();
         //main_raii_02();
         //main_random();
-        main_range_based_for_loop();
+        //main_range_based_for_loop();
         //main_reference_wrapper();
         //main_regular_expressions();
         //main_rvalue_lvalue();
         //main_sfinae();
-        //main_shared_ptr();
+       // main_shared_ptr();
         //main_source_location();
         //main_sso();
         //main_static_assert();
@@ -106,7 +106,7 @@ int main()
         //main_variant();
         //main_virtual_base_class_destructor();
         //main_virtual_override_final();
-        //main_weak_pointer();
+        main_weak_pointer();
 
         //main_exercises();
     }

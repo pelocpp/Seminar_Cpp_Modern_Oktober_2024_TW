@@ -23,7 +23,7 @@ namespace UniquePointerGeneral {
         (*ptr)++;
         std::println("*ptr:    {}", *ptr);
 
-        // take ownership right now:
+        // take ownership right now: DON'T DO THIS
         // std::unique_ptr<int> ptr2{ std::move(ptr) };
     }
 
@@ -50,8 +50,14 @@ namespace UniquePointerGeneral {
 
     static void test_01()
     {
+        //std::unique_ptr<int> ptr111;
+        //std::unique_ptr<int> ptr222;
+        //ptr111 = ptr222;
+
+
         // create a unique_ptr to an int with value 123
         std::unique_ptr<int> ptr1{ new int{ 123 } };
+        
         // or
         // std::unique_ptr<int> ptr1{ std::make_unique<int>(123) };
         // or
@@ -86,13 +92,14 @@ namespace UniquePointerGeneral {
     {
         // retrieving a unique pointer from a function
         std::unique_ptr<int> ptr{ loadUniquePointer() };
+        
         std::println("*ptr:    {}", *ptr);
 
         // provide a function with a unique pointer: who owns the pointer now?
         storeUniquePointer(ptr);
 
         // C++ Core Guidelines
-        storeUniquePointerAlternate(ptr.get());
+        // storeUniquePointerAlternate(ptr.get());
 
         // does this work?
         std::println("*ptr:    {}", *ptr);

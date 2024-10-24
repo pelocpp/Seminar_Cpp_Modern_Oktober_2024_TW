@@ -229,3 +229,180 @@ B) Hier sollte man Lambdas verwenden.
 Smart Pointer
 -------------
 
+Was ist das Problem mit new ???
+
+Wir könnten das delete vergessen.
+
+Antwort: "Wer ist der Besitzer des Zeigers ???"
+
+
+
+Lösungen / Ideen:
+
+A) Objekt-Orientierung.
+
+   Klassen und Objekte
+
+B) Konstruktoren / Destruktoren
+
+   Wann wir ein Destruktor aufgerufen?
+
+   {
+        Foo f;
+
+
+   }    <=== Destruktor von f
+
+   Aufruf ist deterministisch.
+
+C) Idee:  Man gebe einen Zeiger in die Obhut
+          eines Objekts // Hüllenobjekt.
+
+   Hüllenobjekt:  Konstruktor ==> new
+
+                  Destruktor  ==> delete
+
+    Beobachtung:  Scope ist etwas "kleineres"
+
+
+AUSSAGE:  Roh-Zeiger / Raw-Pointer wird durch
+          ein Hüllenobjekt verwaltet.
+
+auto_ptr  ===> deprecated
+
+
+MEHRERE Hüllenklassen / Unterschiedliche Strategien.
+
+std::unique_ptr
+std::shared_ptr
+std::weak_ptr
+
+i) std::unique_ptr
+
+Strategie: Ein std::unique_ptr-Objekt kann zu
+           einem Zeitpunkt nur EINEN Besitzer haben.
+
+           Diesen kann man durch "Verschieben" ändern.
+
+           Den Besitz kann man weiterreichen.
+
+
+ii) std::shared_ptr
+
+Strategie: Ein std::shared_ptr-Objekt kann zu
+           einem Zeitpunkt MEHRERE Besitzer haben.
+
+           Diese werden gezählt:  Referenzzähler:  0 -> 1 -> 2 -> 1 -> 0.
+
+Bemerkung: std::weak_ptr unterstützt die Klasse std::shared_ptr.
+
+=========================================================
+
+Rückgabe von Werten aus Unterprogrammen:
+
+RVO - Return Value Optimization.
+
+Copy/Move Elision
+
+to elide
+
+=========================================================
+
+Frage:
+
+Go-for
+
+== std::unique_ptr  ???
+== std::shared_ptr  ???
+
+2 ABER:
+
+i)  std::shared_ptr BZGL. REFERENZZÄHLER ist ein Mutex dabei // langsamer
+
+ii) std::shared_ptr: FUNKTIONIERT NICHT IMMER !!!!!!!!!!!!!!!!!!!!!!!
+
+Migration: Es wird jeder "klassische" Zeiger durch einen shared_ptr
+           ausgetauscht: Never :)
+
+2 Antwort: 
+
+i)   Wie arbeite ich mit dem std::weak_ptr ???    
+ii)  Was ist das Problem des std::shared_ptr ???  Zyklen
+iii) Wie arbeitet man mit std::shared_ptr UND std::weak_ptr ???
+
+
+
+Zyklische Referenzen:
+
+Struktur:   Observer-Pattern
+
+"Es wird ein Objekt beobachtet"
+
+a) Ziel-Objekt: Wird beobachtet.
+
+b) Clients:  Beobachter: Diese beobachten das Ziel-Objekt.
+
+Okay:
+
+Wenn im Ziel-Objekt eine Änderung eintritt,
+werden die Clients benachrichtig // wird eine Methode
+an den Clients aufgerufen.
+
+Bedeutet:
+
+Ein Client meldet sich am Ziel-Objekt an,
+um Benachrichtigungen zu erhalten.
+
+Das Ziel-Objekt kennt ein oder mehrere Clients
+und benachrichtigt diese.
+
+FAZIT:
+
+a) Das Ziel-Objekt kennt eine oder mehrere  Clients.
+
+b) Ein oder mehrere Clients kennen ihr Ziel-Objekt.
+
+Das ist ein Zyklus !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+Wie lässt sich dieses Szenario - trotz Zyklus - korrekt realisieren ???
+
+A) Ziel-Objekt: Wird mit std::shared_ptr angelegt.
+   (Hauptprogramm)
+
+B) Alle Client-Objekte: Werden alle mit std::shared_ptr angelegt.
+   (Hauptprogramm)
+
+C) Beobachtung: Ein Client meldet sich am Ziel-Objekt an.
+
+   zielObjekt.attach (clientObject);
+
+   Wie sollte IM Ziel-Objekt die Variable 'clientObject' (shared_ptr)
+   aufgehoben / abgespeichert werden ???????????????
+
+   Als  std::weak_ptr !!!!!!!!
+
+
+Szenario:
+
+ Ziel-Objekt lebt LANGE.
+
+ Ein Client Objekt geht aus dem Speicher. // kein shared-ptr mehr.
+
+ UND: Er hat sich NICHT ge-detached !!!
+
+ Was ist im Ziel-Objekt "übrig" geblieben von diesem  Client Objekt:
+
+ Ein Weak-Ptr !!!
+
+ ==> Das Ziel-Objekt könnte meinen, dieser Client lebt noch.
+
+  ==> Das Ziel-Objekt muss lock aufrufen .... shared_ptr: null
+
+  Dieser Pointer (Null) ist zu ignorieren.
+
+
+
+
+
+
+
