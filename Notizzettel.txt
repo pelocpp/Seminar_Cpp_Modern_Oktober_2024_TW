@@ -1,0 +1,231 @@
+================================
+
+Modern C++
+
+Peter Loos
+
+Guten Morgen
+
+================================
+
+https://github.com/pelocpp
+
+https://github.com/pelocpp/cpp_modern
+
+================================
+
+Ziel: Move-Semantik
+
+RValue // LValue
+
+a) Beispiel
+b) Ergänzendes Material / Dokumentation
+
+
+
+Ab C++ 11:
+
+Kritikpunkte an C++:   Unnötige Kopien
+
+Langsamer als C  ==> Performanz
+
+
+RValue: WOZU ????????????????????????????????????????
+
+Move-Semantik:
+--------------
+
+// Vergleich:
+
+.... A0     // temporär am Stack // wird freigegeben
+.... 10     // im Vektor (wurde kopiert von dem tmp. Objekt vom Stack)
+
+--------------------------------------
+
+.... 60
+
+--------------------------------------
+
+.... B0
+
+=================================================
+
+auto
+
+Threading:
+
+Bei Threading sollte man beim Gebrauch von Referenzen VORSICHTIG sein
+.... oder diese eher NICHT verwenden.
+
+Da ist eine Kopie besser !!!!!!!
+
+In Bezug auf auto:   Man verwende auto und nicht auto&
+
+=================================================
+
+Algorithmen:
+
+Call-to-Action: Algorithmen der STL einsetzen
+
+
+for-Schleife
+
+
+Architektur der STL:
+
+A) Container:
+
+   Verwalten Daten
+
+   std::vector:  lineare Ablage
+
+   std::unordered_map:   Hash Tabelle // Dictionary
+
+B) Zugriff: Iteratoren
+
+   Das "erste", "zweite", dritte Element
+
+   == Iteratoren ermöglichen Zugriff
+   == Mit Iteratoren kann man durch einen
+      Container durchaufen
+   == Iteratoren kennen Operatoren:
+
+      !=    *    ++ nächsten Position
+
+
+C) STL Algorithmen
+
+   Sind einfache Operationen auf STL Containern
+
+== Container
+
+    begin(), end()
+
+   |
+   |
+   V
+
+
+== Iteratoren
+
+   |
+   |
+   V
+
+== Algorithmus: Traversieren:  std::for_each
+
+
+
+std:fill:
+
+std::memset,  std::memmov, ....
+
+
+=================================================
+
+Lambda
+
+
+Was ist der Unterschied zwischen std::function und Lambda ???
+
+std::function:
+
+ALLES, was aufrufbar ist, datentechnisch in die Hand
+nehmen kannst.
+
+== C-Funktion
+== Methode eines Objekt
+== Lambda 
+== std::greater
+== Callable Object ...
+
+"Lambda - Funktion"
+
+NEIN: Lambda - Objekte   : Von welcher Klasse
+
+// Die ist versteckt .. .oder wird vom Compiler erzeugt.
+
+
+Lambda - Objekte :
+
+Was besitzen Objekte:  Instanzariablen
+
+Eine Methode , die im Zentrum des Lambda-Objekts steht.
+
+Signatur:
+
+Beispiel:
+
+void  (int wert) const;   // <======= ist const :-(
+
+Erste Tage von C++:   
+
+const-nes abschalten:  mutable
+
+Wie groß ist dieses Lambda - Objekt:
+
+"Cpp Insights"
+
+Hilfestellung:
+
+Classic C++ =========> Modern C++
+
+Verständnis:
+
+Wie wird Modern C++ auf Classic C++ umgesetzt ???
+
+Beispiel:
+
+#include <iostream>
+
+void testSeminar_intro() { 
+
+   auto myLambda = [](int wert) { std::cout << wert << " "; };
+}
+
+Ausgabe:
+
+void testSeminar_intro()
+{
+  std::basic_string<char, std::char_traits<char>, std::allocator<char> > header = std::basic_string<char, std::char_traits<char>, std::allocator<char> >("Wert: ", std::allocator<char>());
+    
+  class __lambda_7_20
+  {
+    public: 
+    inline /*constexpr */ void operator()(int wert) const
+    {
+      std::operator<<(std::operator<<(std::cout, header).operator<<(wert), " ");
+    }
+    
+    private: 
+    std::string & header;   // oder
+    std::string header;
+    
+    public:
+    __lambda_7_20( std::string & _header)
+    : header{_header}
+    {}
+    
+  };
+  
+  __lambda_7_20 myLambda = __lambda_7_20{header};
+  myLambda.operator()(123);
+}
+
+
+=======================================================
+
+Call-to-Action:
+
+Wann verwende ich Lambdas
+
+A) Wenn man STL Algorithmen einsetzt.
+
+B) Hier sollte man Lambdas verwenden.
+
+=======================================================
+=======================================================
+
+Smart Pointer
+-------------
+
