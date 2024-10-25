@@ -29,7 +29,7 @@ int main()
         //main_attributes();
         //main_auto();
         //main_back_inserter();
-        //main_brace_initialization();
+      //  main_brace_initialization();
         //main_bind();
         //main_casts();
         //main_common_type();
@@ -54,7 +54,7 @@ int main()
         //main_functional_programming_ranges();
         //main_functional_programming();
         //main_functional_programming_alternate();
-        //main_initializer_list();
+     // main_initializer_list();
         //main_input_output_streams();  
         //main_invoke();
         //main_lambdas();
@@ -66,7 +66,7 @@ int main()
         //main_metaprogramming_02(); 
         //main_modularized_standard_library(); 
         //main_modules();
-       // main_move_semantics();
+       main_move_semantics();
         //main_optional();
         //main_perfect_forwarding();
         //main_placement_new();
@@ -106,9 +106,9 @@ int main()
         //main_variant();
         //main_virtual_base_class_destructor();
         //main_virtual_override_final();
-        main_weak_pointer();
+       // main_weak_pointer();
 
-        //main_exercises();
+       // main_exercises();
     }
     catch (const std::exception& ex) {
         std::cout << "Exception: " << ex.what() << std::endl;

@@ -6,11 +6,25 @@ Peter Loos
 
 Guten Morgen
 
+peter.loos@gmx.de
+
 ================================
 
 https://github.com/pelocpp
 
 https://github.com/pelocpp/cpp_modern
+
+================================
+
+Initialisierung
+
+std::initializer_list
+
+const // const_expr
+
+std::string vs. str::string_view
+
+emplace 
 
 ================================
 
@@ -470,8 +484,71 @@ Many different macros. You have to remember a bit more than with Boost.Test and 
 
 ===================================================================
 
-2 Stunden
+Initialisierung:
+
+Neue Syntax
+
+Alte Syntax geht auch .............
+
+"In einem Satz: () ==> {}"
+
+
+===================================================================
+
+Initialisierung:    Initialisierungs-Liste
+
+std::initializer_list:    ===> STACK
+
+std::vector:              ===> HEAP
+
+LAUFZEIT // PERFORMANZ
+
+std::initializer_list:    Leichtgewichtiger Container
+
+===================================================================
+
+Hübschere Konstruktoren:
+
+Listen-Konstruktor
 
 
 
+std::vector<int> vec (10);  ==> 10 ints, alle 0
 
+std::vector<int> vec{ 10 }; ==> 1 int, Wert 10
+
+
+=================================================
+
+Go for 'const' !!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+Kritiker: Freunde der funktionalen Programmierung.
+
+Werbung:
+
+Funktionalen Programmierung: ist schnell
+
+Why:  CPU ... Pipelining // Parallelisierung
+
+Weil Funktionale Programme haben keinen ZUSTAND.
+                 Instanzvariablen
+
+C++: Wir können den Code-Generator unterstützen:
+Mit möglichst viel Einsatz von 'const' !!!!
+
+=================================================
+
+emplace_back  // emplace.
+
+
+Call-to-Action:
+
+
+Go for emplace
+
+=================================================
+
+Call-to-Action:
+
+Go for noexcept

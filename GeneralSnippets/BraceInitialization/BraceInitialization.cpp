@@ -14,7 +14,7 @@ namespace BraceInitialization {
         int ival{ 123 };
 
         double d1 = ival;      // Compiles
-        // double d2{ ival };  // Error: "conversion from 'int' to 'double' requires a narrowing conversion"
+      //  double d2{ ival };  // Error: "conversion from 'int' to 'double' requires a narrowing conversion"
     }
 
     // =================================================================================
@@ -22,7 +22,10 @@ namespace BraceInitialization {
 
     static void test_01()
     {
-        int n{};              // n equals 0
+        int m = 0;
+
+        int n{ 0 };              // n equals 0
+
         float f{};            // f equals 0.0
         double d{};           // d equals 0.0
         unsigned long l{};    // l equals 0
@@ -40,6 +43,9 @@ namespace BraceInitialization {
 
     static void test_02()
     {
+        
+        int m = 1;
+        
         int n{ 1 };          // n equals 1
         float f{ 1.5f };     // f equals 1.5
         double d{ 2.5 };     // d equals 2.5
@@ -58,9 +64,11 @@ namespace BraceInitialization {
         int m_j;
     };
 
+    struct Struct obj_global;
+
     static void test_03()
     {
-        [[ maybe_unused]] struct Struct obj0;         // uninitialized !!!
+        struct Struct obj0;                           // uninitialized !!!
         struct Struct obj1 {};                        // obj1.m_i => 0, obj1.m_j => 0
         struct Struct obj2 { 1, 2 };                  // obj2.m_i => 1, obj2.m_j => 2
         struct Struct obj3 { 3 };                     // obj3.m_i => 3, obj3.m_j => 0
@@ -96,7 +104,7 @@ namespace BraceInitialization {
 
     static void test_05()
     {
-        Class obj{ 11, 12 };  // obj.m_a => 11, obj.m_b => 12
+        Class obj( 11, 12 );  // obj.m_a => 11, obj.m_b => 12
     }
 
     class AnotherClass
@@ -190,7 +198,20 @@ namespace BraceInitialization {
 
     static void test_09()
     {
-        int intArray[] { 1, 2, 3, 4, 5 };
+        int intArray1[5];
+
+        int intArray2[] { 1, 2, 3, 4, 5 };
+
+        int intArray3[5]{ 1, 2, 3 };
+
+        int intArray4[100]{ 1 };
+
+        int intArray5[100]{ 0 };
+
+        int intArray6[100]{  };
+
+
+        int intArray[]{ 1, 2, 3, 4, 5 };
 
         for (int n : intArray) {
             std::cout << n << ", ";
