@@ -660,6 +660,12 @@
     <ClCompile Include="Println\Println.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Catch_Demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Catch_Main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Readme.md">
@@ -1191,6 +1197,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\Notizzettel_Multithreading.txt" />
     <Text Include="..\Notizzettel.txt" />
   </ItemGroup>
 </Project>

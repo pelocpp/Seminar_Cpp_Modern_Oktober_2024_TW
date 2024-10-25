@@ -401,7 +401,76 @@ Szenario:
   Dieser Pointer (Null) ist zu ignorieren.
 
 
+==================================================================================================
 
+
+Unit Testing C++
+
+
+Google Test
+
+Catch2      Header-Only - Version 2
+
+Version 3:  Bibibliothek
+
+Catch2 is a multi-paradigm test framework for C++
+
+Unit Test
+
+BDD - Behaviour Driven Design
+
+=================================================
+
+Wie finde ich einen seltenen / sporadischen Fehler:
+
+Debugging
+
+
+
+Logging / Trace
+
+
+Konsole: PowerShell // Shell Skript
+
+======================================
+
+Catch
+
+Header-only. (until v3, which becomes a library, faster compile times)
+
+Supports unit-tests with bdd style (in this style you do not need fixtures anymore).
+
+Easy to get started.
+
+Does not support mock objects.
+
+One single REQUIRE macro for almost any comparison. Easy to use.
+
+Boost.Test
+
+Supports data driven tests since 1.60 (if I do not recall incorrectly). Very useful for random testing generating data.
+
+Since 1.60, supports single BOOST_CHECK macro, same as CATCH.
+
+No support for mock objects, though you can use boost.turtle. I used it together with boost/catch and it did a good job.
+
+Supports header-only and library variants. You should use library variant in general.
+
+Google Test
+
+Supports death tests (tests that would break the machine, such as segfaults).
+
+Comes with google mock. You have mocking out of the box.
+
+Does not support C++11 move semantics. I recall this was annoying at some point for my testing.
+
+Must embed in your project as a source to compile with the rest of your code.
+
+Many different macros. You have to remember a bit more than with Boost.Test and Catch in this area. Not a problem, though.
+
+===================================================================
+
+2 Stunden
 
 
 

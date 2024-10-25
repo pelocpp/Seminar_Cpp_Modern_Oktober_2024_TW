@@ -1,0 +1,263 @@
+================================
+
+Modern C++
+
+Peter Loos
+
+Guten Morgen
+
+================================
+
+Multithreading:
+
+https://github.com/pelocpp/cpp_concurrency
+
+================================
+
+
+Multihreading:
+
+
+Getting Started ....
+--------------------
+
+std::thread
+
+std::jthread
+
+std::async  // std::future // std::promise
+
+std::condition_variable
+
+
+Neuere Themen:
+--------------------
+
+10. Nochmals nebenläufige Ausführung: Klasse std::jthread
+
+11. Die Klassen std::stop_source, std::stop_token, std::stop_callback 
+
+12. Verriegelungen und Barrieren: Klassen std::latch 
+
+13. Semaphore: Klassen std::binary_semaphore und std::counting_semaphore
+
+
+================================
+
+C++ -- Standard C++ Bibliothek
+
+Klasse   std::thread
+
+         Windows: std::thread ==> CreateThread
+
+Funktion std::async
+
+
+Erster Entwurf:  Threading in der Standard C++ Bibliothek
+
+                 ist der "kleinste gemeinsame Nenner" für alle Betriebssysteme,
+
+                 die der Standard unterstützt.
+
+                 Beispiel: start() ist hier nicht vorhanden.
+
+	
+Wie lange läuft ein Thread ???
+
+A) Bis die Funktion des Threads verlassen wird ???
+
+ODER
+
+B) Bis der primäre Thread sich beendet!
+
+   Das bedeutet, dass alle sekundären Threads beendet werden.^	
+
+Windows:  Prozess // Programm  ===> Ein primärer Thread gestartet ("main")
+
+// ===========================================
+
+Neuer Entwurf:  Threads sollen Resultate zum Thread-Erzeuger transportieren können.
+
+std::async
+
+Ein std::future - Objekt ist ein Datenkanal zwischen Thread und Thread-Erzeuger !!!
+
+Haben wir es ebenfalls mit (Windows) std::thread  zu tun ???????????
+
+CreateThread Win32 Funktion ist von der Performanz nicht optimal
+
+In leistungsfähigeren  Betriebssysteme:  Thread Pool
+
+
+https://ddanilov.me/std-async-implementations/
+
+oder
+
+https://github.com/pelocpp/cpp_concurrency/blob/master/Programs/04_Async/Readme.md
+
+
+// ===========================================
+
+
+Frage:
+
+Mehrere Threads greifen auf DIESELBE Variable / Daten zu ....
+
+Gemeinsame Variablen bzgl. Threads
+
+Hmmm, sind kritisch ... aber manchmal brauche ich diese
+
+
+Geht das ? Ja.    Wettlauf Problem.
+
+
+Ich kann KEINE Aussage über eine REIHENFOLGE machen !!!!!!!!!!!!!!!
+
+Reihenfolge: Problem: Nicht zu lösen.
+
+Zwischen zwei Threads einen Container ablegen:
+
+(( dieser ist natürlich zu schützen:  Mutex ))
+
+i)  Ein Thread, der etwas tut, legt Informationen in dem Container ab!
+
+ii) Ein zweiter Thread, der etwas tut,
+    entnimmt Informationen aus diesem Container ab!
+
+     Was ist, wenn der Container leer ist ...
+
+wait / notify 
+
+std::condition_variable    // Bedingung
+
+Container: kann leer sein, kann gefüllt sein // Bedingungen
+
+=======================>    2 Hilfsmittel !!!!!!!!!!!!
+
+A) Mehrere Threads greifen auf DIESELBE Variable / Daten zu: Geht das ?? Ja. // NEIN.
+
+B) Schutz mehrerer Threads, die gemeinsame Variablen verwenden: MUTEX
+
+   KOOPERATION von Threads:  Unterstützung.   ===> wait  // notify 
+
+
+
+A) Eine Variable counter:  Vorbelegung; mit 0
+
+   i) Ich zähle counter 1000 mal hoch ++             ( in einem Thread )
+
+   ii) Ich zähle counter 1000 mal runten --          ( in einem anderen Thread )
+
+ Welchen Wert hat counter danach ???????????????? ===> Wert 0
+
+Analyse:
+
+                ++m_counter;
+00007FF7BB8509F3  mov         rax,qword ptr [this]     // LESEN
+00007FF7BB8509FA  mov         eax,dword ptr [rax]  
+00007FF7BB8509FC  inc         eax    // inkrementieren // AKKU
+00007FF7BB8509FE  mov         rcx,qword ptr [this]  
+00007FF7BB850A05  mov         dword ptr [rcx],eax      // SCHREIBEN
+
+                ++m_counter;
+00007FF7BB8509F3  mov         rax,qword ptr [this]     // LESEN
+00007FF7BB8509FA  mov         eax,dword ptr [rax]  
+00007FF7BB8509FC  inc         eax    // inkrementieren // AKKU // 123
+     // Thread Wechsels
+00007FF7BB8509FE  mov         rcx,qword ptr [this]  
+00007FF7BB850A05  mov         dword ptr [rcx],eax      // SCHREIBEN
+
+
+Was passiert bei einem Thread Wechsel ???
+
+==> Es wird der Zustand der Maschine / Rechenwerk / Register
+    GERETTET.   EAX wird gerettet.
+
+Der Thread kehrt zurück >>> EAX wird auf den alten Zustand rückgesetzt
+
+
+Wie mache ich es richtig ???
+
+Unterstützung:  
+
+Win32:   InterlockedIncrement  Hier wird unterbrechungsfrei ADDIERT
+
+               unterbrechungsfrei ===> Interrupt Sperre
+
+                                       Bussperre
+
+Atomare Operation
+
+
+Noch schärfer:  Gegenseitige Ausschluss:  // Mutual Exclusion // MUTEX
+
+Bereich: Sperren und Entsperren
+
+
+HÜLLENKLASSEN :   std::unique_ptr    // std::lock_guard
+
+
+Konstruktor:  new       // lock
+
+Destruktor:   delete    // unlock
+
+            for (size_t n{}; n != NumIterations; ++n) {
+
+                std::lock_guard<std::mutex> guard { m_mutex };  // lock
+
+                ++m_counter;
+            
+            }   Destruktor:   // unlock
+
+============================================================
+
+
+A) std::condition_variable
+
+B) wait // notify : Elementar
+
+C) wait // notify:  An einem realen Problem
+
+Mehrere Threads  // gemeinsame Daten
+
+Ein (mehrere) Threads produzieren / erzeugen Daten
+Ein (mehrere) Threads benötigen / konsumieren Daten
+
+Producer / Consumer Problem.
+
+====>
+
+
+Frage:
+
+A) Man brächte einen Thread EXTRA für Eier von Hühnern
+
+
+B) std::condition_variable  eggsAvailable;
+
+
+Bemerkung: Java, C#:
+
+Die haben thread-sichere Container:  ThreadSafeQueue
+
+==============================================================
+
+Threads: Und wer läuft wann ???
+
+SW:  Scheduler
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -172,6 +172,12 @@
     <ClCompile Include="BraceInitialization\Module_BraceInitialization.ixx" />
     <ClCompile Include="Casts\Casts.cpp" />
     <ClCompile Include="Casts\Module_Casts.ixx" />
+    <ClCompile Include="Catch_Demo.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="Catch_Main.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="CommonType\CommonType.cpp" />
     <ClCompile Include="CommonType\Module_CommonType.ixx" />
     <ClCompile Include="ConceptsRequiresClasses\ConceptsRequiresClasses.cpp" />
@@ -545,6 +551,7 @@
     <ClInclude Include="ScopedTimer\ScopedTimer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="..\Notizzettel_Multithreading.txt" />
     <Text Include="..\Notizzettel.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
